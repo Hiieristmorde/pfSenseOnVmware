@@ -82,7 +82,7 @@ With this guide you will learn how to install and configure pfSense as a virtual
 3.Open the Terminal 
 
 
-4.type  ip a then enter = with this terminal code we can see eth0 or ens33 with their assigned IP addresses
+4.type  "ip a" then enter with this terminal code we can see eth0 or ens33 with their assigned IP addresses
 
 
 5.If has no IP addresses than type sudo dhclient 
@@ -93,16 +93,67 @@ sudo ip addr add 192.168.1.100/24 dev eth0
 sudo ip route add default via 192.168.1.1
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
-we are giving ip address, default route and DNS address with admin autority 
+"we are giving ip address, default route and DNS address with admin autority."
 
 
-7.After that we can test it ping 192.168.1.1 and ping 8.8.8.8 
+7.After that we can test it with "ping 192.168.1.1 and ping 8.8.8.8"
 
 
 8.Now we are successfly connected  to pfSense 
 
 
-📌------------------------------------Settings And ------------------------------------📌
+📌------------------------------------Settings And Configuration ------------------------------------📌
+
+1.Now we can open Firefox and go to 192.168.1.1 to access the pfSense Dashboard.
+
+2.Default login credentials are:
+
+  - Username: admin
+
+  - Password: pfsense
+
+3.After the first login, there will be a setup wizard. Keep the default settings, but make sure to change the password.
+
+4.Now check that both WAN and LAN interfaces have correct IP addresses and that the arrows are up and green.
+
+5.Now it’s time to set up our first traffic rule (block port 80 – HTTP).
+This basic rule allows us to control devices and prevent them from connecting to untrusted sources that do not use secure HTTPS (port 443).
+
+6.On the top menu, go to Firewall → Rules.
+
+7.You will see the active rules listed below — click Add to create a new one.
+
+8.Configure the rule as follows:
+
+Action: Block
+
+Interface: LAN
+
+Address Family: IPv4
+
+Protocol: TCP
+
+Source: LAN net
+
+Destination: any
+
+Destination Port Range:
+From: HTTP (80) ➜ To: HTTP (80)
+
+Description: Block HTTP for testing
+
+9.Then click Save and Apply Changes.
+
+10.To test the rule, open the Kali terminal and type:
+
+ -  curl http://example.com → this connection should fail
+
+ -  curl https://example.com → this connection should be successful
+
+With that, we have successfully completed the pfSense setup, configuration, and connection with Kali Linux.
+
+Thank you for visiting my document — I hope it was helpful. 🙌
+
 
 
 
